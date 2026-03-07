@@ -135,5 +135,3 @@ python agent/react_agent.py
 - If DNS/network to `dashscope.aliyuncs.com` fails:
   - embeddings may fall back to `FakeEmbeddings`
   - chat generation will return fallback error message
-- In `agent/tools/agent_tools.py`, prompt text mentions `get_current_month`, but current tool function name is `get_cur_month`.
-

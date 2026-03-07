@@ -14,15 +14,15 @@ class BaseModelFactory(ABC):
 
 class ChatModelFactory(BaseModelFactory):
     def generator(self) -> Optional[object]:
-        model_name = rag_config.get("model_name") 
+        model_name = rag_config.get("model_name")
         if not model_name:
-            raise KeyError("Missing model field in config/rag.yml (`model_name`, `chat_model_name`, or `chat_moldel_name`).")
+            raise KeyError("Missing required config key `model_name` in config/rag.yml.")
         return ChatTongyi(model=model_name)
     
 
 class EmbeddingModelFactory(BaseModelFactory):
     def generator(self) -> Optional[object]:
-        provider = rag_config.get("embedding_provider", "dashscope")
+        provider = str(rag_config.get("embedding_provider", "dashscope")).lower()
         if provider == "fake":
             logger.warning("Using FakeEmbeddings because `embedding_provider=fake` in config.")
             return FakeEmbeddings(size=1024)

@@ -44,7 +44,7 @@ def get_user_id() -> str:
 
 
 @tool
-def get_cur_month() -> str:
+def get_current_month() -> str:
     """Return a random month string."""
     return random.choice(month_arr)
 
