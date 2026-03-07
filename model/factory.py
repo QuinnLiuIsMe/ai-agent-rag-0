@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from functools import lru_cache
 from typing import Optional
 from utils.config_handler import rag_config
 from utils.logger_handler import logger
@@ -42,19 +43,11 @@ class EmbeddingModelFactory(BaseModelFactory):
             return FakeEmbeddings(size=1024)
 
 
-chat_model = None
-embedding_model = None
-
-
+@lru_cache(maxsize=1)
 def get_chat_model() -> object:
-    global chat_model
-    if chat_model is None:
-        chat_model = ChatModelFactory().generator()
-    return chat_model
+    return ChatModelFactory().generator()
 
 
+@lru_cache(maxsize=1)
 def get_embedding_model() -> object:
-    global embedding_model
-    if embedding_model is None:
-        embedding_model = EmbeddingModelFactory().generator()
-    return embedding_model
+    return EmbeddingModelFactory().generator()

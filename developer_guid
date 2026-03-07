@@ -1,0 +1,45 @@
+# Developer Guide
+
+## Project Entry Points
+- `rag/vector_store.py`: Build/refresh Chroma vector database from local files.
+- `rag/rag_service.py`: Retrieve + summarize from knowledge base.
+- `agent/react_agent.py`: ReAct-style agent with tools and middleware.
+
+## Environment
+- Python: recommended `3.12`.
+- Install deps:
+  - `pip install -r requirement.txt`
+- Required env var for online model calls:
+  - `DASHSCOPE_API_KEY`
+
+## Config Files
+- `config/rag.yml`
+  - `model_name`
+  - `embedding_model_name`
+  - optional `embedding_provider: fake` for local/offline embedding tests.
+- `config/chroma.yml`
+  - vector DB and chunking settings.
+- `config/agent.yml`
+  - `external_data_path`.
+- `config/prompt.yml`
+  - prompt file paths.
+
+## Runtime Notes
+- If DashScope is unavailable:
+  - embedding may fall back to `FakeEmbeddings`;
+  - chat generation will return graceful fallback messages.
+- Vector ingestion uses `md5.txt` to skip files already processed.
+
+## Typical Dev Workflow
+1. Update configs/prompts/code.
+2. Rebuild KB index if source docs changed:
+   - `python rag/vector_store.py`
+3. Validate RAG:
+   - `python rag/rag_service.py`
+4. Validate Agent:
+   - `python agent/react_agent.py`
+
+## Logging
+- Logs are written to `logs/` with daily filenames.
+- Main logger name is `agent`.
+
